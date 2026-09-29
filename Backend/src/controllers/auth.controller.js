@@ -3,15 +3,6 @@ const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
 const tokenBlacklistModel=require("../models/blacklist.model.js");
 
-const isProduction=process.env.NODE_ENV === "production";
-const authCookieOptions={
-    httpOnly:true,
-    secure:isProduction,
-    sameSite:isProduction ? "none" : "lax",
-    maxAge:24 * 60 * 60 * 1000,
-    path:"/"
-};
-
 /**
  * @ route registerUserContoller
  * @ description Register a new user,expects username,email and password in the request body
@@ -47,7 +38,7 @@ const token=jwt.sign({id:user._id,username:user.username},
 process.env.JWT_SECRET,
 {expiresIn:"1d"})
 
-res.cookie("token",token,authCookieOptions);
+res.cookie("token",token);
 
 res.status(201).json({
     message:"User registered successfully",
@@ -86,7 +77,7 @@ async function loginController(req,res){
     process.env.JWT_SECRET,
     {expiresIn:"1d"})
 
-    res.cookie("token",token,authCookieOptions);
+    res.cookie("token",token);
 
     res.status(200).json({
         message:"Login successful",
@@ -113,12 +104,7 @@ async function logoutController(req,res){
 
     await tokenBlacklistModel.create({token});
 
-    res.clearCookie("token",{
-        httpOnly:authCookieOptions.httpOnly,
-        secure:authCookieOptions.secure,
-        sameSite:authCookieOptions.sameSite,
-        path:authCookieOptions.path
-    });
+    res.clearCookie("token");
 
     res.status(200).json({message:"Logout successful"});
 }
