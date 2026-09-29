@@ -3,10 +3,24 @@ const cookieParser=require("cookie-parser");
 const cors=require("cors");
 const app=express();
 
+const allowedOrigins=(process.env.FRONTEND_URLS || process.env.FRONTEND_URL || "")
+    .split(",")
+    .map((origin)=>origin.trim())
+    .filter(Boolean);
+
+if(process.env.NODE_ENV !== "production"){
+    allowedOrigins.push("http://localhost:5173");
+}
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: (origin,callback)=>{
+        if(!origin || allowedOrigins.includes(origin)){
+            return callback(null,true);
+        }
+        return callback(new Error("Origin is not allowed by CORS"));
+    },
     credentials: true
 }));
 

@@ -1,14 +1,13 @@
-import axios from 'axios';
+import api from "../../../lib/api.js";
 
 export async function register({username, email, password}){
 
     try{
-        const response = await axios.post('http://localhost:3000/api/auth/register', {
+        const response = await api.post('/api/auth/register', {
             username,
             email,
             password
-        }, 
-        {withCredentials: true});
+        });
 
         return response.data;
     } catch (error) {
@@ -19,11 +18,10 @@ export async function register({username, email, password}){
 
 export async function login({email, password}){
     try{
-        const response = await axios.post('http://localhost:3000/api/auth/login', {
+        const response = await api.post('/api/auth/login', {
             email,
             password
-        }, 
-        {withCredentials: true});
+        });
 
         return response.data;
 
@@ -33,20 +31,13 @@ export async function login({email, password}){
 }
 
 export async function logout(){
-    const response = await axios.get('http://localhost:3000/api/auth/logout', {
-        withCredentials: true
-    });
+    const response = await api.get('/api/auth/logout');
     return response.data;
 }    
 
 export async function getCurrentUser() {
     try {
-        const response = await axios.get(
-            "http://localhost:3000/api/auth/get-user",
-            {
-                withCredentials: true
-            }
-        );
+        const response = await api.get("/api/auth/get-user");
 
         return response.data;
     } catch (error) {
