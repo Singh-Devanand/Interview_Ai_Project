@@ -1,6 +1,7 @@
 const express=require("express");
 const cookieParser=require("cookie-parser");
 const cors=require("cors");
+const connectToDb=require("./config/database.js");
 const app=express();
 
 const allowedOrigins=[
@@ -26,6 +27,17 @@ app.use(cors({
     },
     credentials: true
 }));
+
+app.use(async (req,res,next)=>{
+    try{
+        await connectToDb();
+        next();
+    }
+    catch(error){
+        console.error("Request could not connect to MongoDB:",error.message);
+        res.status(503).json({message:"Database is unavailable"});
+    }
+});
 
 /*require all the routes here  */
 const authRouter=require("./routes/auth.routes.js");

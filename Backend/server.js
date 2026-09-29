@@ -1,14 +1,6 @@
 require("dotenv").config();
 const app=require("./src/app.js");
 const connectToDb=require("./src/config/database.js");
-async function handler(req,res){
-	await connectToDb();
-	return app(req,res);
-}
-
-
-
-
 if(require.main === module){
 	connectToDb()
 		.then(()=>{
@@ -24,4 +16,4 @@ if(require.main === module){
 }
 
 
-module.exports=handler;
+module.exports=app;
