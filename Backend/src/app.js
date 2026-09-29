@@ -3,10 +3,13 @@ const cookieParser=require("cookie-parser");
 const cors=require("cors");
 const app=express();
 
-const allowedOrigins=(process.env.FRONTEND_URLS || process.env.FRONTEND_URL || "")
+const allowedOrigins=[
+    "https://interview-ai-project-3rrp.vercel.app",
+    ...(process.env.FRONTEND_URLS || process.env.FRONTEND_URL || "")
     .split(",")
     .map((origin)=>origin.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+];
 
 if(process.env.NODE_ENV !== "production"){
     allowedOrigins.push("http://localhost:5173");

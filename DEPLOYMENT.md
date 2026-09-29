@@ -10,7 +10,7 @@ Add these environment variables in Vercel Project Settings:
 - `MONGO_URI`: MongoDB connection string. Use a newly rotated database password.
 - `JWT_SECRET`: a new, long random secret. Rotating it signs out existing users.
 - `GOOGLE_GENAI_API_KEY`: a newly generated Google GenAI key.
-- `FRONTEND_URLS`: the frontend's exact `https://` Vercel domain. Add any additional allowed frontend domains as a comma-separated list, without trailing slashes.
+- `FRONTEND_URLS`: the frontend's exact `https://` Vercel domain, for example `https://interview-ai-project-3rrp.vercel.app`. Add any additional allowed frontend domains as a comma-separated list, without trailing slashes. The current production frontend domain is also included as a narrow fallback in the backend code.
 
 Vercel supplies `NODE_ENV=production`. The backend exports a serverless request handler from `server.js` and also supports local startup with `npm run dev`.
 
